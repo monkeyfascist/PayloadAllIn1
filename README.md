@@ -6,3 +6,5 @@ All in one payload
 # Requirements
 - Ngrok
 - Python3
+
+Only tested in kali linux
