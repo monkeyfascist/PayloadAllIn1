@@ -10,6 +10,12 @@ All in one payload
 Only tested in kali linux
 
 # How to use
-`git clone https://github.com/monkeyfascist/PayloadAllIn1.git`\
-`cd PayloadAllIn1-main`\
-`python3 main.py`
+```
+git clone https://github.com/monkeyfascist/PayloadAllIn1.git
+```
+```
+cd PayloadAllIn1-main
+```
+```
+python3 main.py
+```
