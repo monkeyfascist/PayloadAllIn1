@@ -14,7 +14,7 @@ Only tested in kali linux
 git clone https://github.com/monkeyfascist/PayloadAllIn1.git
 ```
 ```
-cd PayloadAllIn1-main
+cd PayloadAllIn1
 ```
 ```
 python3 main.py
