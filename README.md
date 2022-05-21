@@ -19,3 +19,4 @@ cd PayloadAllIn1
 ```
 python3 main.py
 ```
+# JUST FOR EDUCATIONAL PURPOSE
